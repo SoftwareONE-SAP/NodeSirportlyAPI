@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/Centiq/NodeSirportlyAPI",
   "dependencies": {
+    "debug": "^2.0.0",
     "merge": "^1.2.0",
     "request": "^2.45.0"
   },

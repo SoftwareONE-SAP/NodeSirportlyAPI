@@ -15,13 +15,13 @@
  */
 var request	= require("request"),
 	util 	= require("util"),
+	debug 	= require("debug")("sirportly:api"),
 	merge 	= require("merge");
 
 /**
  * Default configuration
  */
 var _default_config = {
-
 	/**
 	 * Token used for requests
 	 * @type {String}
@@ -69,6 +69,8 @@ function SirportlyAPI(config) {
 	{
 		throw new Error("Misconfiguration, token, secret and server required in the config.");
 	}
+
+	debug("Initialized with [%s]", this._config.server);
 }
 
 /**
@@ -78,6 +80,8 @@ function SirportlyAPI(config) {
  * @param  {Function} callback Callback
  */
 SirportlyAPI.prototype.request = function(uri, options, callback) {
+	if(!callback || typeof callback != "function")
+		throw new Error("Callback parameter must be a fuction");
 	/**
 	 * Server endpoint for this request
 	 * @type {String}
@@ -92,10 +96,11 @@ SirportlyAPI.prototype.request = function(uri, options, callback) {
 		method	: 'GET',
 		url 	: endpoint,
 		headers : {
-			"X-Auth-Token" : this._config.token,
-			"X-Auth-Secret" : this._config.secret
+			"X-Auth-Token":  this._config.token,
+			"X-Auth-Secret": this._config.secret
 		}
 	}, options);
+
 
 	/**
 	 * Make the request
@@ -104,6 +109,7 @@ SirportlyAPI.prototype.request = function(uri, options, callback) {
 	 * @param  {String} 		body     String representation of the repsonse body
 	 */
 	request(options, function(error, response, body){
+		debug("Request to [%d] -> [%s]", response.statusCode, uri);
 		/**
 		 * Check for request error
 		 */
@@ -123,7 +129,7 @@ SirportlyAPI.prototype.request = function(uri, options, callback) {
 			 * Single error response
 			 */
 			if(body_json.error)
-				return callback(new Error(body_json.error, response.statusCode, body));
+				return callback(new Error(body_json.error));
 
 			/**
 			 * Multiple error resposnse, encode and represent as a string
@@ -270,46 +276,6 @@ SirportlyAPI.prototype.slas = function(callback) {
 SirportlyAPI.prototype.filters = function(callback) {
 	return this.request('/api/v2/objects/filters', {}, callback);
 }
-
-/**
- * Define the error Class
- */
-function SirportlyError(message, code, body) {
-	/**
-	 * Call the parent {Error} constructor
-	 */
-	Error.call(this);
-
-	/**
-	 * Capture the stack trace
-	 */
-	Error.captureStackTrace(this, this.constructor);
-
-	/**
-	 * Set our function’s name as error name.
-	 * @type {String}
-	 */
-	this.name = this.constructor.name;
-
-	/**
-	 * Set the error message
-	 * @type {String}
-	 */
-	this.message = message;
-
-	/**
-	 * Error Code
-	 * @type {Number}
-	 */
-	this.code = code || 0;
-
-	/**
-	 * Response body
-	 * @type {Object}
-	 */
-	this.body = body || {};
-}
-util.inherits(SirportlyError, Error);
 
 
 /**
