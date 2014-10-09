@@ -29,7 +29,7 @@ api.ticket("<ticket-refernce>", function(err, ticket){
 
 #### Listing Tickets
 ```js
-api.ticket(1, function(err, tickets){
+api.tickets(1, function(err, tickets){
     for(var ticket in tickets) {
         console.log(ticket.reference);
     }
@@ -38,7 +38,7 @@ api.ticket(1, function(err, tickets){
 
 ### Submitting a new Ticket
 ```js
-api.submit_ticket({
+api.create_ticket({
     subject:             "Sample Subject",
     status:              "<status-name>",
     priority:            "<priority-name>",
