@@ -109,12 +109,16 @@ SirportlyAPI.prototype.request = function(uri, options, callback) {
 	 * @param  {String} 		body     String representation of the repsonse body
 	 */
 	request(options, function(error, response, body){
-		debug("Request to [%d] -> [%s]", response.statusCode, uri);
 		/**
 		 * Check for request error
 		 */
 		if(error) return callback(error);
 
+		/**
+		 * Small debug notice about the response.
+		 */
+		debug("Request to [%d] -> [%s]", response.statusCode, uri);
+		
 		/**
 		 * Decode the JSON Body
 		 * @type {Object}
