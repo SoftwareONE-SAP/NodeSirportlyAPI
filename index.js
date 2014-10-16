@@ -197,7 +197,7 @@ SirportlyAPI.prototype.submit_ticket = function(params, callback) {
  * @see http://sirportly.com/docs/api-specification/tickets/posting-an-update
  */
 SirportlyAPI.prototype.post_update = function(reference, updates, callback) {
-	this.request('/api/v2/tickets/post_update',{method: "POST", qs: merge(updates || {}, {ticket: reference})}, callback);
+	this.request('/api/v2/tickets/post_update', merge({form: updates}, {method: "POST", qs: {ticket: reference}}) , callback);
 }
 
 /**
@@ -208,7 +208,7 @@ SirportlyAPI.prototype.post_update = function(reference, updates, callback) {
  * @see http://sirportly.com/docs/api-specification/tickets/changing-ticket-properties
  */
 SirportlyAPI.prototype.update_ticket = function(reference, updates, callback) {
-	this.request('/api/v2/tickets/update', {method: "POST", qs: merge(updates || {}, {ticket: reference})}, callback);
+	this.request('/api/v2/tickets/update', merge({form: updates}, {method: "POST", qs: {ticket: reference}}) , callback);
 }
 
 /**
@@ -229,8 +229,8 @@ SirportlyAPI.prototype.run_macro = function(reference, macro, callback) {
  * @param {Function} callback Callback
  * @see http://sirportly.com/docs/api-specification/tickets/add-a-follow-up
  */
-SirportlyAPI.prototype.add_follow_up = function(reference, params, callback) {
-	this.request('/api/v2/tickets/add_followup', {method: "POST", qs : merge(params || {}, {ticket: reference})}, callback);
+SirportlyAPI.prototype.add_follow_up = function(reference, updates, callback) {
+	this.request('/api/v2/tickets/add_followup', merge({form: updates}, {method: "POST", qs: {ticket: reference}}) , callback);
 }
 
 /**
@@ -325,7 +325,7 @@ SirportlyAPI.prototype.create_user = function(email, first, last, params, callba
  * @see http://sirportly.com/docs/api-specification/tickets/run-spql-query
  */
 SirportlyAPI.prototype.spql = function(query, callback) {
-	this.request('/api/v2/tickets/spql', {method: "POST", qs: {spql: query}}, callback);
+	this.request('/api/v2/tickets/spql', {method: "POST", form: {spql: query}}, callback);
 }
 
 /**
