@@ -1,6 +1,6 @@
 {
   "name": "sirportly-api",
-  "version": "1.0.0-pre",
+  "version": "1.0.1-pre",
   "description": "Sirportly API",
   "main": "index.js",
   "scripts": {
